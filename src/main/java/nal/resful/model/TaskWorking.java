@@ -1,6 +1,6 @@
 package nal.resful.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +11,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 @Table(name = "taskworking")
@@ -24,19 +25,19 @@ public class TaskWorking {
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="startdate")
-	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date startdate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate startdate;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="enddate")
-	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date enddate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate enddate;
 	
 	private String status;
 	
 	public TaskWorking() {};
 	
-	public TaskWorking(String name, Date startdate, Date enddate, String status) {
+	public TaskWorking(String name, LocalDate startdate, LocalDate enddate, String status) {
 		this.setName(name);
 		this.setStartdate(startdate);
 		this.setEnddate(enddate);
@@ -61,19 +62,19 @@ public class TaskWorking {
 		this.name = name;
 	}
 
-	public Date getStartdate() {
+	public LocalDate getStartdate() {
 		return startdate;
 	}
 
-	public void setStartdate(Date startdate) {
+	public void setStartdate(LocalDate startdate) {
 		this.startdate = startdate;
 	}
 	
-	public Date getEnddate() {
+	public LocalDate getEnddate() {
 		return enddate;
 	}
 
-	public void setEnddate(Date enddate) {
+	public void setEnddate(LocalDate enddate) {
 		this.enddate = enddate;
 	}
 

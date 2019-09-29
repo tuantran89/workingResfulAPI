@@ -1,10 +1,9 @@
 package nal.resful.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import nal.resful.model.TaskWorking;
 import nal.resful.model.entity.WorkingRepository;
@@ -34,11 +32,11 @@ public class WorkingController {
     }
 	
 	@PostMapping("/work/add")
-    public ModelAndView create(Model model, @RequestBody Map<String, String> body) throws Exception{
+    public String createTaskWorking(Model model, @RequestBody Map<String, String> body) throws Exception{
 		
         String title = body.get("name");
-        Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(body.get("startdate"));
-        Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(body.get("enddate"));  
+        LocalDate startDate = LocalDate.parse(body.get("startdate"));
+        LocalDate endDate = LocalDate.parse(body.get("enddate"));  
         String status = body.get("status");
         try {
         	 workingRespository.save(new TaskWorking(title, startDate,endDate,status));
@@ -46,34 +44,33 @@ public class WorkingController {
         	 
         }
        
-        List<TaskWorking> alltaskworking = workingRespository.findAll();
-        ModelAndView mv = new ModelAndView("redirect:/index.html");
-        mv.getModel().put("workings", alltaskworking);
-        return mv;
+        return "index";
     }
 	
 	@PutMapping("/work/update/{id}")
-    public TaskWorking update(@PathVariable String id, @RequestBody Map<String, String> body) throws Exception{
+    public String updateTaskWorking(Model model,@PathVariable String id, @RequestBody Map<String, String> body) throws Exception{
         int workId = Integer.parseInt(id);
         
-        TaskWorking working = workingRespository.findOne(workId);
-        working.setName(body.get("name"));
-        Date startdate = new SimpleDateFormat("yyyy-MM-dd").parse(body.get("startdate"));
-        Date enddate = new SimpleDateFormat("yyyy-MM-dd").parse(body.get("enddate"));  
-        working.setStartdate(startdate);
-        working.setEnddate(enddate);
-        working.setStatus(body.get("status"));
-        return workingRespository.save(working);
+        Optional<TaskWorking> optionWorking = workingRespository.findById(workId);
+        if(optionWorking.isPresent()) {
+        	TaskWorking working = optionWorking.get();
+        	working.setName(body.get("name"));
+            LocalDate startdate = LocalDate.parse(body.get("startdate"));
+            LocalDate enddate = LocalDate.parse(body.get("enddate"));  
+            working.setStartdate(startdate);
+            working.setEnddate(enddate);
+            working.setStatus(body.get("status"));
+            workingRespository.save(working);
+        }
+        
+        return "index";
     }
 
     @DeleteMapping("work/delete/{id}")
-    public ModelAndView delete(Model model, @PathVariable String id){
+    public String deleteTaskWorking(Model model, @PathVariable String id){
         int workId = Integer.parseInt(id);
-        workingRespository.delete(workId);
+        workingRespository.deleteById(workId);
         
-        List<TaskWorking> alltaskworking = workingRespository.findAll();
-        ModelAndView mv = new ModelAndView("redirect:/index.html");
-        mv.getModel().put("workings", alltaskworking);
-        return mv;
+        return "index";
     }
 }

@@ -25,6 +25,35 @@ function deleteRow(btndel){
     }
 }
 
+function updateRow(btnedit){
+	if (typeof(btnedit) == "object") {
+		
+        var editRow = $(btnedit).closest("tr");
+        var id = editRow.find('.id:first').text();
+        
+        var work = {}
+        work["name"] = editRow.find('.name:first').text();
+        work["startdate"] = editRow.find('.stdate:first #startdate').val();
+        work["enddate"] = editRow.find('.enddate:first #enddate').val();
+        work["status"] = editRow.find('.status:first #status').val();
+        
+        try {
+      	  const response = fetch("/work/update/" + id, {
+      	    method: 'PUT', 
+      	    body: JSON.stringify(work),
+      	    headers: {
+      	      'Content-Type': 'application/json'
+      	    }
+      	  });
+        } catch (error) {
+      	  console.error('Error:', error);
+        }
+      
+    } else {
+        return false;
+    }
+}
+
 function addWorkByResful() {
 
     var work = {}
