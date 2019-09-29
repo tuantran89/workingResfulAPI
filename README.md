@@ -11,8 +11,8 @@ Tools used in this article :
 * MySQL 5.7
 
 Database information
-*Schema : restapi
-*url : jdbc:mysql://localhost:3306/restapi?useSSL=false
-*user : root
-*password : 1234
-*table : taskworking
+* Schema : restapi
+* url : jdbc:mysql://localhost:3306/restapi?useSSL=false
+* user : root
+* password : 1234
+* table : taskworking
