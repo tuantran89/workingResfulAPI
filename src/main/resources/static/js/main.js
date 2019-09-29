@@ -15,9 +15,13 @@ function deleteRow(btndel){
         var id = $(btndel).closest("tr").find('.id:first').text();
         fetch("/work/delete/" + id, {
     	    method: 'DELETE'
-    	  }).then(() => {
-    	     console.log('removed');
-    	  }).catch(err => {
+    	  }).then(response=>{
+              if(response.ok){
+            	  location.reload(); 
+              }
+              throw new Error('Request failed');
+          	}, newtworkError => console.log(networkError.message)
+    	  ).catch(err => {
     	    console.error(err)
     	  });
     } else {
@@ -44,7 +48,13 @@ function updateRow(btnedit){
       	    headers: {
       	      'Content-Type': 'application/json'
       	    }
-      	  });
+      	  }).then(response=>{
+              if(response.ok){
+            	  location.reload(); 
+              }
+              throw new Error('Request failed');
+          	}, newtworkError => console.log(networkError.message)
+    	  );
         } catch (error) {
       	  console.error('Error:', error);
         }
@@ -57,10 +67,10 @@ function updateRow(btnedit){
 function addWorkByResful() {
 
     var work = {}
-    work["name"] = $("#name").val();
-    work["startdate"] = $("#startdate").val();
-    work["enddate"] = $("#enddate").val();
-    work["status"] = $("#status").val();
+    work["name"] = $("#add-form #name").val();
+    work["startdate"] = $("#add-form #startdate").val();
+    work["enddate"] = $("#add-form #enddate").val();
+    work["status"] = $("#add-form #status").val();
     
     try {
     	  const response = fetch("/work/add", {
@@ -69,7 +79,13 @@ function addWorkByResful() {
     	    headers: {
     	      'Content-Type': 'application/json'
     	    }
-    	  });
+    	  }).then(response=>{
+              if(response.ok){
+            	  location.reload(); 
+              }
+              throw new Error('Request failed');
+          	}, newtworkError => console.log(networkError.message)
+    	  );
     } catch (error) {
     	  console.error('Error:', error);
     }
