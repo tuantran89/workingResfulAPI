@@ -44,11 +44,21 @@
 			<tbody>
 				<tr th:each="work : ${workings}">
 			        <th scope="row" th:text="${work.id}" class="id">1</th>
-			        <td th:text="${work.name}">Title ...</td>
-			        <td th:text="${work.startdate}">Startdate ...</td>
-			        <td th:text="${work.enddate}">Enddate ...</td>
-			        <td th:text="${work.status}">Status ...</td>
-			        <td><button class="button" onclick="editRow(this);">Edit</button></td>
+			        <td th:text="${work.name}" class="name" contentEditable="true">Name ...</td>
+			        <td class="stdate" contentEditable="true">
+			        <input type="date" class="form-control" id="startdate" name="startdate" th:value="${#temporals.format(work.startdate, 'yyyy-MM-dd')}"/>
+			        </td>
+			        <td class="enddate" contentEditable="true">
+			       	<input type="date" class="form-control" id="enddate" name="enddate" th:value="${#temporals.format(work.enddate, 'yyyy-MM-dd')}"/>
+			        </td>
+			        <td class="status" contentEditable="true">
+			        	<select class="form-control" id="status" name="status" th:value="${work.status}">
+						  <option value="planing">Planing</option>
+						  <option value="doing">Doing</option>
+						  <option value="complete">Complete</option>
+						</select>
+			        </td>
+			        <td><button class="button" onclick="updateRow(this);">Update</button></td>
 			        <td><button class="button" onclick="deleteRow(this);">Delete</button></td>
 				</tr>
 			</tbody>
